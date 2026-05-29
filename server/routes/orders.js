@@ -1,5 +1,6 @@
 const express = require('express');
 const db = require('../db');
+const { requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -50,8 +51,8 @@ router.get('/kitchen', (req, res) => {
   res.json(orders);
 });
 
-// 更新订单状态（厨师端）
-router.patch('/:orderId/status', (req, res) => {
+// 更新订单状态（仅厨师）
+router.patch('/:orderId/status', requireRole('chef'), (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
 

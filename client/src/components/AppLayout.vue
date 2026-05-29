@@ -20,10 +20,14 @@
             <span class="nav-icon">📋</span>
             <span class="nav-label">历史</span>
           </router-link>
+          <router-link to="/admin" class="nav-item" :class="{ active: route.path === '/admin' }" v-if="userStore.isAdmin">
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">管理</span>
+          </router-link>
         </nav>
         <div class="user-info" v-if="userStore.isLoggedIn">
           <div class="user-badge">
-            <span class="user-avatar">{{ userStore.isChef ? '👨‍🍳' : '😊' }}</span>
+            <span class="user-avatar">{{ userStore.isChef ? '👨‍🍳' : userStore.isAdmin ? '👑' : '😊' }}</span>
             <span class="username">{{ userStore.username }}</span>
           </div>
           <button class="logout-btn" @click="handleLogout">退出</button>

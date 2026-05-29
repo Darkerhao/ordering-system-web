@@ -28,6 +28,12 @@ const routes = [
     name: 'History',
     component: () => import('../views/History.vue'),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/Admin.vue'),
+    meta: { requiresAuth: true, requiresAdmin: true }
   }
 ]
 
@@ -41,6 +47,8 @@ router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   if (to.meta.requiresAuth && !user) {
     next('/login')
+  } else if (to.meta.requiresAdmin && user?.role !== 'admin') {
+    next('/')
   } else if (to.path === '/login' && user) {
     next('/')
   } else {

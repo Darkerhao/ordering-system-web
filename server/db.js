@@ -56,7 +56,7 @@ if (db.dishes.length === 0) {
   console.log('✅ 已初始化菜品数据');
 }
 
-// ============ 初始化厨师账号 ============
+// ============ 初始化厨师和管理员账号 ============
 
 if (!db.users.find(u => u.role === 'chef')) {
   const hash = bcrypt.hashSync('chef123', 10);
@@ -69,6 +69,19 @@ if (!db.users.find(u => u.role === 'chef')) {
   });
   writeDB(db);
   console.log('✅ 已创建厨师账号: chef / chef123');
+}
+
+if (!db.users.find(u => u.role === 'admin')) {
+  const hash = bcrypt.hashSync('admin123', 10);
+  db.users.push({
+    id: db._nextId.users++,
+    username: 'admin',
+    password: hash,
+    role: 'admin',
+    created_at: new Date().toISOString()
+  });
+  writeDB(db);
+  console.log('✅ 已创建管理员账号: admin / admin123');
 }
 
 // ============ 查询方法 ============
@@ -97,6 +110,32 @@ const dbAPI = {
   },
   findDishById(id) {
     return db.dishes.find(d => d.id === id && d.available === 1);
+  },
+  findDishByIdAll(id) {
+    return db.dishes.find(d => d.id === id);
+  },
+  createDish(name, price, category) {
+    const dish = { id: db._nextId.dishes++, name, price: Number(price), category, image: '', available: 1, created_at: new Date().toISOString() };
+    db.dishes.push(dish);
+    writeDB(db);
+    return dish;
+  },
+  updateDish(id, fields) {
+    const dish = db.dishes.find(d => d.id === id);
+    if (!dish) return null;
+    if (fields.name !== undefined) dish.name = fields.name;
+    if (fields.price !== undefined) dish.price = Number(fields.price);
+    if (fields.category !== undefined) dish.category = fields.category;
+    if (fields.available !== undefined) dish.available = fields.available;
+    writeDB(db);
+    return dish;
+  },
+  deleteDish(id) {
+    const idx = db.dishes.findIndex(d => d.id === id);
+    if (idx === -1) return false;
+    db.dishes.splice(idx, 1);
+    writeDB(db);
+    return true;
   },
 
   // 订单

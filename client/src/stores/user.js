@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', () => {
 
   const isLoggedIn = computed(() => !!user.value)
   const isChef = computed(() => user.value?.role === 'chef')
+  const isAdmin = computed(() => user.value?.role === 'admin')
   const userId = computed(() => user.value?.id)
   const username = computed(() => user.value?.username)
 
@@ -19,5 +20,5 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('user')
   }
 
-  return { user, isLoggedIn, isChef, userId, username, setUser, logout }
+  return { user, isLoggedIn, isChef, isAdmin, userId, username, setUser, logout }
 })

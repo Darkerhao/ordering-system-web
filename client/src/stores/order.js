@@ -14,6 +14,25 @@ export const useOrderStore = defineStore('order', () => {
     dishes.value = data
   }
 
+  async function fetchAllDishes() {
+    const { data } = await axios.get('/api/dishes/all')
+    dishes.value = data
+  }
+
+  async function createDish(dishData) {
+    const { data } = await axios.post('/api/dishes', dishData)
+    return data.dish
+  }
+
+  async function editDish(id, dishData) {
+    const { data } = await axios.put(`/api/dishes/${id}`, dishData)
+    return data.dish
+  }
+
+  async function removeDish(id) {
+    await axios.delete(`/api/dishes/${id}`)
+  }
+
   async function fetchUserOrders(userId) {
     const { data } = await axios.get(`/api/orders/user/${userId}`)
     orders.value = data
@@ -59,8 +78,9 @@ export const useOrderStore = defineStore('order', () => {
 
   return {
     orders, kitchenOrders, history, stats, dishes,
-    fetchDishes, fetchUserOrders, fetchKitchenOrders,
+    fetchDishes, fetchAllDishes, fetchUserOrders, fetchKitchenOrders,
     fetchHistory, fetchStats, placeOrder,
-    updateOrderStatus, updateLocalOrder, addKitchenOrder
+    updateOrderStatus, updateLocalOrder, addKitchenOrder,
+    createDish, editDish, removeDish
   }
 })
