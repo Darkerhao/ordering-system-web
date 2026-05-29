@@ -7,6 +7,7 @@ client/dist/
 # 数据库文件
 server/data.json
 server/*.db
+data/
 
 # 日志
 *.log

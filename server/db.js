@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const DB_FILE = path.join(__dirname, 'data.json');
+const DB_FILE = process.env.DB_FILE || path.join(__dirname, 'data.json');
 
 // 读取数据库
 function readDB() {

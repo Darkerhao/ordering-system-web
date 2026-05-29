@@ -20,9 +20,12 @@ app.use('/api/dishes', require('./routes/dishes'));
 app.use('/api/orders', require('./routes/orders'));
 
 // 静态文件（生产模式）
-app.use(express.static(path.join(__dirname, '../client/dist')));
+const distPath = process.env.NODE_ENV === 'production'
+  ? path.join(__dirname, '../client/dist')
+  : path.join(__dirname, '../client/dist');
+app.use(express.static(distPath));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // ============ WebSocket ============
