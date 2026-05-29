@@ -12,7 +12,7 @@
             <span class="nav-icon">🍜</span>
             <span class="nav-label">点菜</span>
           </router-link>
-          <router-link to="/kitchen" class="nav-item" :class="{ active: route.path === '/kitchen' }">
+          <router-link to="/kitchen" class="nav-item" :class="{ active: route.path === '/kitchen' }" v-if="userStore.isChef">
             <span class="nav-icon">👨‍🍳</span>
             <span class="nav-label">厨房</span>
           </router-link>

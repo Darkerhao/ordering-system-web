@@ -74,11 +74,12 @@ app.set('io', io);
 
 // 启动服务器
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+const HOST = process.env.HOST || '0.0.0.0';
+server.listen(PORT, HOST, () => {
   console.log('');
   console.log('🍽️  =============================');
   console.log('🍽️  点菜系统后端已启动');
-  console.log(`🍽️  地址: http://localhost:${PORT}`);
+  console.log(`🍽️  地址: http://${HOST}:${PORT}`);
   console.log('🍽️  =============================');
   console.log('');
 });

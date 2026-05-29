@@ -27,6 +27,7 @@ RUN mkdir -p /app/data
 
 # 环境变量
 ENV PORT=3000
+ENV HOST=0.0.0.0
 ENV NODE_ENV=production
 ENV DB_FILE=/app/data/data.json
 

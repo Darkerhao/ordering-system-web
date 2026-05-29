@@ -21,7 +21,7 @@ const routes = [
     path: '/kitchen',
     name: 'Kitchen',
     component: () => import('../views/Kitchen.vue'),
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true, requiresChef: true }
   },
   {
     path: '/history',
@@ -47,6 +47,8 @@ router.beforeEach((to, from, next) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null')
   if (to.meta.requiresAuth && !user) {
     next('/login')
+  } else if (to.meta.requiresChef && user?.role !== 'chef') {
+    next('/')
   } else if (to.meta.requiresAdmin && user?.role !== 'admin') {
     next('/')
   } else if (to.path === '/login' && user) {

@@ -70,7 +70,7 @@
             <div class="card-user">👤 {{ order.username }}</div>
             <div class="card-note" v-if="order.note">📝 {{ order.note }}</div>
             <div class="card-time">{{ formatTime(order.created_at) }}</div>
-            <div class="card-actions">
+            <div class="card-actions" v-if="userStore.isChef">
               <button class="action-btn cook" @click="updateStatus(order, 'cooking')">🔥 开始做</button>
               <button class="action-btn done" @click="updateStatus(order, 'done')">✅ 完成</button>
             </div>
@@ -93,7 +93,7 @@
             </div>
             <div class="card-user">👤 {{ order.username }}</div>
             <div class="card-time">{{ formatTime(order.created_at) }}</div>
-            <div class="card-actions">
+            <div class="card-actions" v-if="userStore.isChef">
               <button class="action-btn done" @click="updateStatus(order, 'done')">✅ 完成制作</button>
             </div>
           </div>
@@ -130,11 +130,13 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useMessage } from 'naive-ui'
+import { useUserStore } from '../stores/user'
 import { useOrderStore } from '../stores/order'
 import { useSocketStore } from '../stores/socket'
 import { NSpin } from 'naive-ui'
 
 const message = useMessage()
+const userStore = useUserStore()
 const orderStore = useOrderStore()
 const socketStore = useSocketStore()
 const loading = ref(false)
@@ -155,7 +157,7 @@ async function updateStatus(order, status) {
     message.success(`${order.dish_name} → ${status === 'cooking' ? '制作中' : '已完成'}`)
     await orderStore.fetchStats()
   } catch (err) {
-    message.error('更新失败')
+    message.error(err.response?.data?.error || '操作失败，请稍后重试')
   }
 }
 
